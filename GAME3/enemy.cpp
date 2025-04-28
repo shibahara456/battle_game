@@ -13,15 +13,15 @@ Enemy::Enemy(int i) {
     atk = 5 + (i * 2);
     exp = 5 + (i * 2);
     kill = 0;
+    height_map = 0;
+    width_map = 0;
 }
 
 void Enemy::random_set(int height_r, int width_r) {
 
-    //height_map = height_r;
-    //width_map = width_r;
+    height_map = height_r;
+    width_map = width_r;
 
-    height_map = 5;
-    width_map = 15;
 }
 
 int Enemy::get_height() {

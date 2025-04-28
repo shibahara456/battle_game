@@ -13,9 +13,12 @@ int main() {
 	while (1) {
 		game.disp_game();
 
+		game.move_player();
+
 		game.move_enemy();
 
-		game.move_player();
+
+		game.chk_battle();
 
 
 

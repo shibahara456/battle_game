@@ -3,7 +3,7 @@
 
 using namespace std;
 
-const int MAX_ENEMY = 1;
+const int MAX_ENEMY = 3;
 
 class Enemy {
 	int hp;

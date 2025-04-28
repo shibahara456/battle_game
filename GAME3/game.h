@@ -23,9 +23,8 @@ public:
 	void reset_disp();
 	bool chk_enemy(int height, int width);
 	void chk_battle();
+	void start_battle();
 	//void start_battle();
-
-	void sample();
 
 };
 
