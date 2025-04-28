@@ -141,7 +141,7 @@ void Game::move_player() {
 
 void Game::move_enemy() {
 
-
+	
 
 	for (int em = 0;em < MAX_ENEMY;em++) {
 		vector<array<int, 3>> log;
@@ -150,95 +150,117 @@ void Game::move_enemy() {
 		int em_height = enemy[em].get_height();
 		int em_width = enemy[em].get_width();
 		int step = 0;
+		int cnt1 = 1;
+		int cnt2 = 1;
+		int flg = 0;
 
 		log.push_back({ step, em_height,em_width });
 		que.push({ em_height,em_width });
 
 
 		while (1) {
-			em_height = que.front()[0];
-			em_width = que.front()[1];
-
-			
-
-
-			if (em_height == player.get_height() && em_width == player.get_width()) {
-				break;
-			}
-
-			que.pop();
-
 			step++;
+			cnt1 = cnt2;
+			cnt2 = 0;
+			
+			for (int s = 0;s < cnt1;s++) {
+				em_height = que.front()[0];
+				em_width = que.front()[1];
 
-			int crossroad[4] = { 0,0,0,0 };		//ã‰º¶‰E‚É“®‚¯‚é‚©‚ðŠi”[‚·‚é@‰Šú’l0	“®‚¯–³‚¢‚È‚ç1
+				que.pop();
 
-			//log‚©‚ç–K–âÏ‚Ý‚©‚Ç‚¤‚©’²‚×‚é@–K–âÏ‚Ý‚È‚çcrossroad‚É‚P‚ð‚¢‚ê‚é
-			for (int i = 0;i < log.size();i++) {
-				if (em_height == log[i][1] && em_width + 1 == log[i][2]) {
+				if (em_height == player.get_height() && em_width == player.get_width()) {
+					flg = 1;
+					break;
+				}
+
+
+
+
+				int crossroad[4] = { 0,0,0,0 };		//ã‰º¶‰E‚É“®‚¯‚é‚©‚ðŠi”[‚·‚é@‰Šú’l0	“®‚¯–³‚¢‚È‚ç1
+
+				//log‚©‚ç–K–âÏ‚Ý‚©‚Ç‚¤‚©’²‚×‚é@–K–âÏ‚Ý‚È‚çcrossroad‚É‚P‚ð‚¢‚ê‚é
+				for (int i = 0;i < log.size();i++) {
+					if (em_height == log[i][1] && em_width + 1 == log[i][2]) {
+						crossroad[0] = 1;
+					}
+					if (em_height == log[i][1] && em_width - 1 == log[i][2]) {
+						crossroad[1] = 1;
+					}
+					if (em_height - 1 == log[i][1] && em_width == log[i][2]) {
+						crossroad[2] = 1;
+					}
+					if (em_height + 1 == log[i][1] && em_width == log[i][2]) {
+						crossroad[3] = 1;
+					}
+				}
+				//“®‚¯‚éêŠ‚ð’T‚·@•Ç”»’è
+				if (map.chk_map(em_height, em_width + 1) == '#') {
 					crossroad[0] = 1;
 				}
-				if (em_height == log[i][1] && em_width - 1 == log[i][2]) {
+				if (map.chk_map(em_height, em_width - 1) == '#') {
 					crossroad[1] = 1;
 				}
-				if (em_height - 1 == log[i][1] && em_width == log[i][2]) {
+				if (map.chk_map(em_height - 1, em_width) == '#') {
 					crossroad[2] = 1;
 				}
-				if (em_height + 1 == log[i][1] && em_width == log[i][2]) {
+				if (map.chk_map(em_height + 1, em_width) == '#') {
 					crossroad[3] = 1;
 				}
-			}
-			//“®‚¯‚éêŠ‚ð’T‚·@•Ç”»’è
-			if (map.chk_map(em_height, em_width + 1) == '#') {
-				crossroad[0] = 1;
-			}
-			if (map.chk_map(em_height, em_width - 1) == '#') {
-				crossroad[1] = 1;
-			}
-			if (map.chk_map(em_height - 1, em_width) == '#') {
-				crossroad[2] = 1;
-			}
-			if (map.chk_map(em_height + 1, em_width) == '#') {
-				crossroad[3] = 1;
-			}
-			//“®‚¯‚éêŠ‚ðƒLƒ…[‚ÆƒƒO‚ÉŠi”[
-			for (int j = 0;j < 4;j++) {
-				if (crossroad[j] == 0) {
-					switch (j){
-					case 0:
-						que.push({ em_height,em_width + 1 });
-						log.push_back({ step,em_height,em_width + 1 });
-						break;
-					case 1:
-						que.push({ em_height,em_width - 1 });
-						log.push_back({ step,em_height,em_width - 1 });
-						break;
-					case 2:
-						que.push({ em_height - 1,em_width});
-						log.push_back({ step,em_height - 1,em_width});
-						break;
-					case 3:
-						que.push({ em_height + 1,em_width });
-						log.push_back({ step,em_height + 1,em_width });
-						break;
-					}
+				//“®‚¯‚éêŠ‚ðƒLƒ…[‚ÆƒƒO‚ÉŠi”[
+				for (int j = 0;j < 4;j++) {
+					if (crossroad[j] == 0) {
+						switch (j) {
+						case 0:
+							que.push({ em_height,em_width + 1 });
+							log.push_back({ step,em_height,em_width + 1 });
+							cnt2++;
+							break;
+						case 1:
+							que.push({ em_height,em_width - 1 });
+							log.push_back({ step,em_height,em_width - 1 });
+							cnt2++;
+							break;
+						case 2:
+							que.push({ em_height - 1,em_width });
+							log.push_back({ step,em_height - 1,em_width });
+							cnt2++;
+							break;
+						case 3:
+							que.push({ em_height + 1,em_width });
+							log.push_back({ step,em_height + 1,em_width });
+							cnt2++;
+							break;
+						}
 
+					}
 				}
+			}	
+			if (flg == 1) {
+				break;
 			}
 		}
+		cout << em_height << "  " << em_width << "\n";
 
-		for (int i = step - 1;i > 1;i--) {
-			if (log[i][0] == step) {
-				int chk = (em_height + em_width) - (log[i][1] + log[i][2]);
+		for (int i = log.size() - 1;i > 1;i--) {
+			
+			
+		}
+		cout << em_height << "  " << em_width;
+		enemy[em].walk_enemy(em_height, em_width);
+	}
+}
+
+/*
+if (log[i][0] == step - 2) {
+				int chk = (em_height - log[i][1]) + (em_width - log[i][2]);
 				if (chk == 1 || chk == -1) {
 					em_height = log[i][1];
 					em_width = log[i][2];
+					step--;
 				}
 			}
-		}
-
-		cout << em_height << em_width;
-	}
-}
+*/
 
 
 
@@ -249,3 +271,4 @@ void Game::chk_battle() {
 		}
 	}
 }
+

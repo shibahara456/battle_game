@@ -17,8 +17,11 @@ Enemy::Enemy(int i) {
 
 void Enemy::random_set(int height_r, int width_r) {
 
-    height_map = height_r;
-    width_map = width_r;
+    //height_map = height_r;
+    //width_map = width_r;
+
+    height_map = 5;
+    width_map = 15;
 }
 
 int Enemy::get_height() {
